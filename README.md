@@ -64,3 +64,8 @@ $ forge --help
 $ anvil --help
 $ cast --help
 ```
+
+
+<!-- The perform up keep is not working the vrf. request random words giving error INVALID CONSUMER -->
+<!--  SO when we are working vrf the request random number will give error as Invalid consumer because we didn't yet setuped the subscriber and consume in vrf interface at chainlink , to do so, we can either use web interface or can done programmatically  -->
+<!-- in interaction.s.sol we are doing to do so =:  -->

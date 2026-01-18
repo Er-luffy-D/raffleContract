@@ -4,6 +4,7 @@ pragma solidity ^0.8.13;
 import {Script} from "forge-std/Script.sol";
 // mock vrf contract
 import {VRFCoordinatorV2_5Mock} from "chainlink-contracts/vrf/mocks/VRFCoordinatorV2_5Mock.sol";
+import {MockLinkToken} from "chainlink-contracts/mocks/MockLinkToken.sol";
 
 /// @title CodeConstants
 /// @notice Helps in providing different constant values to other contracts (such as chainID etc)
@@ -14,7 +15,7 @@ abstract contract CodeConstants {
     uint96 public constant MOCK_GAS_PRICE = 1e9;
     int256 public constant MOCK_WEI_PER_UNIT_LINK = 4e15;
 
-    uint256 public constant SEPOLIA_ETH_CHAIN_ID = 1115511;
+    uint256 public constant SEPOLIA_ETH_CHAIN_ID = 11155111;
     uint256 public constant LOCAL_CHAIN_ID = 31337;
 }
 
@@ -29,6 +30,7 @@ contract HelperConfig is Script, CodeConstants {
         uint32 callbackGasLimit;
         uint256 subscriptionId;
         bool enableNativePayment;
+        address link;
     }
 
     NetworkConfig public localNetworkConfig;
@@ -61,7 +63,8 @@ contract HelperConfig is Script, CodeConstants {
             gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
             callbackGasLimit: 50000,
             subscriptionId: 0,
-            enableNativePayment: true
+            enableNativePayment: true,
+            link: 0x779877A7B0D9E8603169DdbD7836e478b4624789 // Link token contract addr
         });
     }
 
@@ -73,6 +76,7 @@ contract HelperConfig is Script, CodeConstants {
             vm.startBroadcast();
             VRFCoordinatorV2_5Mock vrfCoordinatorMock =
                 new VRFCoordinatorV2_5Mock(MOCK_BASE_FEE, MOCK_GAS_PRICE, MOCK_WEI_PER_UNIT_LINK);
+            MockLinkToken LinkToken = new MockLinkToken();
             vm.stopBroadcast();
 
             localNetworkConfig = NetworkConfig({
@@ -82,7 +86,8 @@ contract HelperConfig is Script, CodeConstants {
                 gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
                 callbackGasLimit: 50000,
                 subscriptionId: 0,
-                enableNativePayment: true
+                enableNativePayment: true,
+                link: address(LinkToken) // Link token contract addr
             });
             return localNetworkConfig;
         }

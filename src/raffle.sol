@@ -44,6 +44,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
     /* Events */
     event RaffleEntered(address indexed player);
     event WinnerPicked(address indexed winner);
+    event RequestedRaffleWinner(uint256 indexed requestId);
 
     constructor(
         uint256 entranceFee,
@@ -136,7 +137,10 @@ contract Raffle is VRFConsumerBaseV2Plus {
         });
 
         // Get our random number from chainlink VRF
-        s_vrfCoordinator.requestRandomWords(request);
+        uint256 requestId=s_vrfCoordinator.requestRandomWords(request);
+
+        // well this event is kindof redundant , the vrf coordinator is also emitting the request id
+        emit RequestedRaffleWinner(requestId);
     }
 
     // this function is gonna call by parentclass.rawfulfillRandomWords function which is external by VRF Coordinator
@@ -168,5 +172,13 @@ contract Raffle is VRFConsumerBaseV2Plus {
 
     function getEntranceFee() external view returns (uint256) {
         return i_entranceFee;
+    }
+
+    function getRaffleState() external view returns (RaffleState) {
+        return s_raffleState;
+    }
+
+    function getPlayer(uint256 indexOfPlayer) external view returns (address) {
+        return s_players[indexOfPlayer];
     }
 }

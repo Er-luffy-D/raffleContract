@@ -5,6 +5,11 @@ libs = ["lib"]
 remappings = [
     "chainlink-contracts/=lib/chainlink-brownie-contracts/contracts/src/v0.8/",
 ]
+fs_permissions = [
+    { access = "read", path = "./broadcast" },
+    { access = "read", path = "./reports" },
+]
+
 [lint]
 exclude_lints = ["mixed-case-variable","screaming-snake-case-immutable"]
 
