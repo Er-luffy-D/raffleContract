@@ -137,7 +137,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
         });
 
         // Get our random number from chainlink VRF
-        uint256 requestId=s_vrfCoordinator.requestRandomWords(request);
+        uint256 requestId = s_vrfCoordinator.requestRandomWords(request);
 
         // well this event is kindof redundant , the vrf coordinator is also emitting the request id
         emit RequestedRaffleWinner(requestId);
@@ -180,5 +180,13 @@ contract Raffle is VRFConsumerBaseV2Plus {
 
     function getPlayer(uint256 indexOfPlayer) external view returns (address) {
         return s_players[indexOfPlayer];
+    }
+
+    function getLastTimeStamp() external view returns (uint256) {
+        return s_lastTimeStamp;
+    }
+
+    function getRecentWinner() external view returns (address) {
+        return s_recentWinner;
     }
 }
